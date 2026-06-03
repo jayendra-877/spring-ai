@@ -1,0 +1,51 @@
+spring:
+  application:
+    name: spring-ai
+  config:
+    import: optional:file:.env[.properties]
+
+  ai:
+    #    ollama:
+    #      base-url: http://localhost:11434
+    #      chat:
+    #        options:
+    #          model: qwen3:8b
+    google:
+      genai:
+        api-key: ${GEMINI_API_KEY}
+        chat:
+          options:
+            model: gemini-2.5-flash
+            temperature: 0.9
+        embedding:
+          api-key: ${GEMINI_API_KEY}
+          text:
+            options:
+              model: gemini-embedding-2
+              dimensions: 1536
+    vectorstore:
+      pgvector:
+        initialize-schema: true
+        remove-existing-vector-store-table: true
+        dimensions: 1536
+    chat:
+      memory:
+        repository:
+          jdbc:
+            initialize-schema: always
+            table-name: chat_memory
+
+
+  datasource:
+    url: jdbc:postgresql://localhost:5434/test-vector-db
+    username: postgres
+    password: jayendra8770
+    driver-class-name: org.postgresql.Driver
+
+
+logging:
+  level:
+    org.springframework.ai:
+      chat.client: DEBUG
+
+
